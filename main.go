@@ -48,9 +48,11 @@ func main() {
 		must(err)
 		addField("Memory clock", formatKHz(clock))
 
+		// Attribute not supported on CUDA 7.5.
 		ratio, err := dev.Attr(cuda.DevAttrSingleToDoublePrecisionPerfRatio)
-		must(err)
-		addField("Single/double perf", strconv.Itoa(ratio))
+		if err == nil {
+			addField("Single/double perf", strconv.Itoa(ratio))
+		}
 
 		printFields(fields)
 	}
